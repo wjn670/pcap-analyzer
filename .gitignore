@@ -1,0 +1,16 @@
+# build
+build/
+/pcap-analyzer
+*.o
+*.dSYM/
+
+# wyniki testów i lokalne raporty
+tests/out/
+wynik*/
+raport/
+
+# system / edytory
+.DS_Store
+.vscode/
+.idea/
+*.swp
