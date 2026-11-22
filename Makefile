@@ -68,6 +68,8 @@ test: unit e2e
 
 sanitize:
 	$(MAKE) clean
+	LSAN_OPTIONS=suppressions=$(CURDIR)/tests/lsan.supp \
+	UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
 	$(MAKE) test CFLAGS="-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer" \
 	             LDFLAGS="-fsanitize=address,undefined"
 

@@ -1,0 +1,2 @@
+# pamięć podręczna czcionek trzymana przez fontconfig do końca procesu
+leak:libfontconfig
