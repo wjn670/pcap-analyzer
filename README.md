@@ -1,5 +1,7 @@
 # pcap-analyzer
 
+[![CI](https://github.com/wjn670/pcap-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/wjn670/pcap-analyzer/actions/workflows/ci.yml)
+
 Narzędzie w języku C dla systemu Linux, które analizuje komunikację **TCP i UDP** zapisaną w plikach
 `.pcap` / `.pcapng` i generuje:
 
