@@ -159,8 +159,12 @@ static void background(double dur)
         uint32_t c = IP(192, 168, 1, 10 + rnd() % 8);
         uint32_t s = IP(203, 0, 113, 10 + rnd() % 5);
         dns_pair(t, c, IP(192, 168, 1, 1), names[rnd() % 5], 0);
-        tcp_session(t + 0.03, c, (uint16_t)(50000 + rnd() % 10000), s, rnd() % 4 ? 443 : 80,
-                    5 + (int)(rnd() % 40), 0.02 + (rnd() % 30) / 1000.0, 0, 0);
+        /* osobne zmienne, bo kolejność liczenia argumentów zależy od kompilatora */
+        uint16_t cport = (uint16_t)(50000 + rnd() % 10000);
+        uint16_t sport = rnd() % 4 ? 443 : 80;
+        int nseg = 5 + (int)(rnd() % 40);
+        double rtt = 0.02 + (rnd() % 30) / 1000.0;
+        tcp_session(t + 0.03, c, cport, s, sport, nseg, rtt, 0, 0);
         if (rnd() % 4 == 0) {
             uint8_t ntp[48] = {0x23};
             udp4(t + 0.1, c, 123, IP(198, 51, 100, 5), 123, ntp, 48);
@@ -224,9 +228,16 @@ int main(int argc, char **argv)
     t = 25;
     uint32_t victim = IP(192, 168, 1, 80);
     for (int i = 0; i < 3000; i++, t += 0.0005) {
-        uint32_t src = IP(100 + rnd() % 100, rnd() % 256, rnd() % 256, 1 + rnd() % 250);
-        tcp4(t, src, (uint16_t)(1024 + rnd() % 60000), victim, 80, rnd(), 0, S, 512, 0);
-        if (i % 3 == 0) tcp4(t + 0.0001, victim, 80, src, (uint16_t)(1024 + rnd() % 60000), rnd(), rnd(), S | A, 29200, 0);
+        uint32_t a = 100 + rnd() % 100, b = rnd() % 256, c = rnd() % 256, d = 1 + rnd() % 250;
+        uint32_t src = IP(a, b, c, d);
+        uint16_t sp = (uint16_t)(1024 + rnd() % 60000);
+        uint32_t seq = rnd();
+        tcp4(t, src, sp, victim, 80, seq, 0, S, 512, 0);
+        if (i % 3 == 0) {
+            uint16_t sp2 = (uint16_t)(1024 + rnd() % 60000);
+            uint32_t seq2 = rnd(), ack2 = rnd();
+            tcp4(t + 0.0001, victim, 80, src, sp2, seq2, ack2, S | A, 29200, 0);
+        }
     }
     /* zalew UDP: 6000 datagramów w 2 s */
     t = 32;
