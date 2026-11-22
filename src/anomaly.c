@@ -88,7 +88,7 @@ static int cmp_b_port_a(const void *x, const void *y)
 static void detect_vertical(analysis_t *A, rec_t *r, size_t n, int proto)
 {
     const config_t *cfg = A->cfg;
-    qsort(r, n, sizeof *r, cmp_ab_port);
+    pa_qsort(r, n, sizeof *r, cmp_ab_port);
     size_t i = 0;
     while (i < n) {
         size_t j = i;
@@ -155,7 +155,7 @@ static void detect_vertical(analysis_t *A, rec_t *r, size_t n, int proto)
 static void detect_sweep(analysis_t *A, rec_t *r, size_t n)
 {
     const config_t *cfg = A->cfg;
-    qsort(r, n, sizeof *r, cmp_a_port_b);
+    pa_qsort(r, n, sizeof *r, cmp_a_port_b);
     size_t i = 0;
     while (i < n) {
         size_t j = i;
@@ -202,7 +202,7 @@ static void detect_sweep(analysis_t *A, rec_t *r, size_t n)
 static void detect_synflood(analysis_t *A, rec_t *r, size_t n)
 {
     const config_t *cfg = A->cfg;
-    qsort(r, n, sizeof *r, cmp_b_port_a);
+    pa_qsort(r, n, sizeof *r, cmp_b_port_a);
     size_t i = 0;
     while (i < n) {
         size_t j = i;
@@ -286,7 +286,7 @@ static void detect_udp_flood(analysis_t *A)
         u->t0 = f->first;
         u->t1 = f->last;
     }
-    qsort(v, n, sizeof *v, cmp_udpagg);
+    pa_qsort(v, n, sizeof *v, cmp_udpagg);
     size_t i = 0;
     while (i < n) {
         size_t j = i;
@@ -392,7 +392,7 @@ static void detect_spikes(analysis_t *A)
         i = last + 1;
     }
 #undef HOT
-    qsort(sp.v, sp.n, sizeof *sp.v, cmp_spike);
+    pa_qsort(sp.v, sp.n, sizeof *sp.v, cmp_spike);
     static const char *const cat_name[TS_NCAT] = {"TCP", "UDP", "inne"};
     for (size_t k = 0; k < sp.n && k < 5; k++) {
         spike_t *s = &sp.v[k];
@@ -551,7 +551,7 @@ static void detect_tcp_quality(analysis_t *A)
     }
     g_ft = ft;
     g_cmp_mode = 0;
-    qsort(idx, n, sizeof *idx, cmp_flow_metric);
+    pa_qsort(idx, n, sizeof *idx, cmp_flow_metric);
     for (size_t k = 0; k < n && k < 5; k++) {
         const flow_t *f = &ft->v[idx[k]];
         uint32_t rt = f->d[0].retrans + f->d[1].retrans;
@@ -577,7 +577,7 @@ static void detect_tcp_quality(analysis_t *A)
     }
     if (n > 0) {
         g_cmp_mode = 1;
-        qsort(idx, n, sizeof *idx, cmp_flow_metric);
+        pa_qsort(idx, n, sizeof *idx, cmp_flow_metric);
         const flow_t *f0 = &ft->v[idx[0]];
         anomaly_t *a = add(A, AN_ZERO_WINDOW, n >= 10 ? SEV_MEDIUM : SEV_LOW, f0->first, f0->last,
                            (double)zw_events, "Zerowe okno TCP w %zu połączeni%s", n, n == 1 ? "u" : "ach");
@@ -732,7 +732,7 @@ void anomaly_detect(analysis_t *A)
     detect_tcp_quality(A);
     detect_misc(A);
 
-    qsort(A->an.v, A->an.n, sizeof *A->an.v, cmp_anomaly);
+    pa_qsort(A->an.v, A->an.n, sizeof *A->an.v, cmp_anomaly);
     memset(A->sev_count, 0, sizeof A->sev_count);
     for (size_t i = 0; i < A->an.n; i++) A->sev_count[A->an.v[i].sev]++;
 }

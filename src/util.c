@@ -348,6 +348,11 @@ double quantile_sorted(const double *v, size_t n, double q)
 double median_inplace(double *v, size_t n)
 {
     if (n == 0) return NAN;
-    qsort(v, n, sizeof *v, cmp_double);
+    pa_qsort(v, n, sizeof *v, cmp_double);
     return quantile_sorted(v, n, 0.5);
+}
+
+void pa_qsort(void *base, size_t n, size_t size, int (*cmp)(const void *, const void *))
+{
+    if (n > 1) qsort(base, n, size, cmp);
 }

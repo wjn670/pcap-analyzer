@@ -379,7 +379,7 @@ static void sec_time(doc_t *d, const analysis_t *A)
     int *idx = xmalloc((size_t)ts->n * sizeof *idx);
     for (int i = 0; i < ts->n; i++) idx[i] = i;
     g_ts = ts;
-    qsort(idx, (size_t)ts->n, sizeof *idx, cmp_bin_bytes);
+    pa_qsort(idx, (size_t)ts->n, sizeof *idx, cmp_bin_bytes);
     table_t t;
     table_init(&t, 6);
     table_col(&t, 0, "Przedział (od początku)", 1.8, AL_LEFT);

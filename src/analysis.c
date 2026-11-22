@@ -330,7 +330,7 @@ static uint16_t *rank_ports(const port_stat_t *ports, size_t *n_out)
     for (int i = 0; i < 65536; i++)
         if (ports[i].flows) r[n++] = (uint16_t)i;
     g_ports = ports;
-    qsort(r, n, sizeof *r, cmp_port_bytes);
+    pa_qsort(r, n, sizeof *r, cmp_port_bytes);
     *n_out = n;
     return r;
 }
@@ -385,18 +385,18 @@ void analysis_finish(analysis_t *A)
             if (f->d[1].pkts == 0) A->udp_oneway++;
         }
     }
-    qsort(A->rtt, A->nrtt, sizeof(double), cmp_double);
+    pa_qsort(A->rtt, A->nrtt, sizeof(double), cmp_double);
     for (int k = 0; k < 2; k++) {
-        qsort(A->fsize[k], A->nfsize[k], sizeof(double), cmp_double);
-        qsort(A->fdur[k], A->nfdur[k], sizeof(double), cmp_double);
+        pa_qsort(A->fsize[k], A->nfsize[k], sizeof(double), cmp_double);
+        pa_qsort(A->fdur[k], A->nfdur[k], sizeof(double), cmp_double);
     }
-    qsort(A->tcp_flow_rank, A->ntcp_flow_rank, sizeof(int32_t), cmp_flow_bytes);
-    qsort(A->udp_flow_rank, A->nudp_flow_rank, sizeof(int32_t), cmp_flow_bytes);
+    pa_qsort(A->tcp_flow_rank, A->ntcp_flow_rank, sizeof(int32_t), cmp_flow_bytes);
+    pa_qsort(A->udp_flow_rank, A->nudp_flow_rank, sizeof(int32_t), cmp_flow_bytes);
 
     A->host_rank = xmalloc((A->nhosts ? A->nhosts : 1) * sizeof(int32_t));
     for (size_t i = 0; i < A->nhosts; i++) A->host_rank[i] = (int32_t)i;
     A->nhost_rank = A->nhosts;
-    qsort(A->host_rank, A->nhost_rank, sizeof(int32_t), cmp_host_bytes);
+    pa_qsort(A->host_rank, A->nhost_rank, sizeof(int32_t), cmp_host_bytes);
 
     A->tcp_port_rank = rank_ports(A->tcp_ports, &A->ntcp_port_rank);
     A->udp_port_rank = rank_ports(A->udp_ports, &A->nudp_port_rank);
@@ -404,7 +404,7 @@ void analysis_finish(analysis_t *A)
     A->dns_rank = xmalloc((A->dns.nnames ? A->dns.nnames : 1) * sizeof(int32_t));
     for (size_t i = 0; i < A->dns.nnames; i++) A->dns_rank[i] = (int32_t)i;
     A->ndns_rank = A->dns.nnames;
-    qsort(A->dns_rank, A->ndns_rank, sizeof(int32_t), cmp_dns_names);
+    pa_qsort(A->dns_rank, A->ndns_rank, sizeof(int32_t), cmp_dns_names);
 }
 
 void analysis_free(analysis_t *A)

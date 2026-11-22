@@ -70,6 +70,8 @@ int port_is_wellknown(int proto, uint16_t port);
 
 int    cmp_double(const void *a, const void *b);
 double quantile_sorted(const double *v, size_t n, double q);
+/* qsort, który nie dostaje NULL dla pustej tablicy (glibc tego zabrania) */
+void pa_qsort(void *base, size_t n, size_t size, int (*cmp)(const void *, const void *));
 double median_inplace(double *v, size_t n);    /* sortuje v */
 
 #endif
