@@ -98,6 +98,7 @@ static void test_flow(void)
     p = mk(0.610, 0, TCPF_FIN | TCPF_ACK, 501, 0xbau, 0); flow_update(&ft, &p, 120, &i, &d);
     flowtable_finish(&ft);
     CHECK(ft.n == 1 && ft.v[0].outcome == TO_CLOSED);
+    flowtable_free(&ft);
 
     /* SYN odrzucony przez RST */
     flowtable_init(&ft);
