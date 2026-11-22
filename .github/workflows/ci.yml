@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        cc: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Zależności
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang pkg-config \
+            libpcap-dev libcairo2-dev fonts-dejavu-core
+
+      - name: Kompilacja
+        run: make CC=${{ matrix.cc }}
+
+      - name: Testy
+        run: make test CC=${{ matrix.cc }}
+
+      - name: Testy z ASan/UBSan
+        if: matrix.cc == 'clang'
+        run: make sanitize CC=clang
