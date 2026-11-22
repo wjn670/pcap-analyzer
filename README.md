@@ -115,7 +115,7 @@ wykrywanie retransmisji nie uwzględnia SACK, a detekcja nieprawidłowości jest
 
 | Osoba | Zakres |
 |---|---|
-| Imię Nazwisko | odczyt i dekodowanie pakietów (`reader`, `decode`) |
-| Imię Nazwisko | przepływy, TCP, DNS (`flow`, `dns`, `analysis`) |
-| Imię Nazwisko | wykrywanie nieprawidłowości, testy (`anomaly`, `tests/`, `tools/`) |
-| Imię Nazwisko | wykresy i raport PDF (`chart`, `figures`, `pdfdoc`, `report`, `export`) |
+| Wiktor Nowakowski | odczyt i dekodowanie pakietów (`reader`, `decode`) |
+| Marcel Szulc | przepływy, TCP, DNS (`flow`, `dns`, `analysis`) |
+| Robert Krajniak | wykrywanie nieprawidłowości, testy (`anomaly`, `tests/`, `tools/`) |
+| Kacper Krzywicki | wykresy i raport PDF (`chart`, `figures`, `pdfdoc`, `report`, `export`) |
